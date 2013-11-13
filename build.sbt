@@ -1,6 +1,14 @@
 EclipseKeys.projectFlavor := EclipseProjectFlavor.Java
 
-libraryDependencies += "com.google.caliper" % "caliper" % "0.5-rc1"
+// The recommended version of Caliper (1.0-beta-2) is of yet unreleased.
+// Clone and install locally:
+// $ git clone https://code.google.com/p/caliper/
+// $ cd caliper/caliper
+// $ mvn clean install
+
+resolvers += "Local Maven" at Path.userHome.asFile.toURI.toURL + ".m2/repository"
+
+libraryDependencies += "com.google.caliper" % "caliper" % "1.0-beta-SNAPSHOT"
 
 libraryDependencies ++= Seq("com.novocode" % "junit-interface" % "0.10-M2" % "test", "junit" % "junit" % "4.8.2")
 
