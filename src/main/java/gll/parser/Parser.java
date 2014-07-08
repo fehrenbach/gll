@@ -119,6 +119,6 @@ public class Parser {
 			}
 		} while (codepoint >= 0);
 
-		// state.writeGSS("c:/users/rendel/documents/gss.dot");
+		state.writeGSS("/home/stefan/gss.dot");
 	}
 }

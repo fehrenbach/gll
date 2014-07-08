@@ -22,8 +22,8 @@ import org.junit.rules.Timeout;
  * 
  */
 public class TestParser {
-	@Rule
-	public MethodRule timeout = new Timeout(500);
+//	@Rule
+//	public MethodRule timeout = new Timeout(500);
 
 	public NonterminalSymbolDerivation assertAccepted(final Sort sort, final String text) throws IOException {
 		final NonterminalSymbolDerivation result = Parser.parse(sort, new StringReader(text));
