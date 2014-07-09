@@ -111,11 +111,6 @@ public class ParsingState implements State {
 	public TerminalSymbolDerivation tokenDerivation;
 
 	/**
-	 * The return slot associated with the current token.
-	 */
-	public Slot tokenReturnSlot;
-
-	/**
 	 * The initial stack frame.
 	 */
 	private final Initial empty = new Initial();

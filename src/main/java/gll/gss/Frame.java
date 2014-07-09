@@ -50,7 +50,6 @@ public class Frame extends Stack {
 	 * </p>
 	 * 
 	 * @param slot
-	 * @param stack
 	 * @param token
 	 */
 	public Frame(final Slot slot, final int token) {
@@ -89,7 +88,7 @@ public class Frame extends Stack {
 	/**
 	 * Link an additional parent frame to this frame.
 	 * 
-	 * @param caller
+	 * @param that
 	 *            the additional parent frame
 	 * @param derivation
 	 *            the associated derivation
