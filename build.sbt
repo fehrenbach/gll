@@ -4,6 +4,10 @@ libraryDependencies += "com.google.caliper" % "caliper" % "0.5-rc1"
 
 libraryDependencies ++= Seq("com.novocode" % "junit-interface" % "0.10-M2" % "test", "junit" % "junit" % "4.8.2")
 
+libraryDependencies += "com.oracle" % "truffle" % "0.3"
+
+resolvers += "truffle" at "http://lafo.ssw.uni-linz.ac.at/nexus/content/repositories/releases"
+
 javacOptions := Seq("-encoding", "UTF-8")
 
 mainClass in Test := Some("com.google.caliper.Runner")
