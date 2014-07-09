@@ -18,9 +18,6 @@ public class Parser {
 	/**
 	 * Parse the contents of a reader according to a syntactic sort.
 	 * 
-	 * @param sort
-	 * @param reader
-	 * @return
 	 * @throws IOException
 	 */
 	public static NonterminalSymbolDerivation parse(final Sort sort, final Reader reader) throws IOException {
@@ -31,11 +28,6 @@ public class Parser {
 
 	/**
 	 * Parse the contents of a string according to a syntactic sort.
-	 * 
-	 * @param sort
-	 * @param reader
-	 * @return
-	 * @throws IOException
 	 */
 	public static NonterminalSymbolDerivation parse(final Sort sort, final String string) {
 		final Parser parser = new Parser(new StringReader(string));
@@ -59,17 +51,11 @@ public class Parser {
 
 	/**
 	 * Create Parser.
-	 * 
-	 * @param sort
-	 * @param reader
 	 */
 	private Parser(final Reader reader) {
 		this.reader = reader;
 	}
 
-	/**
-	 * @return
-	 */
 	private NonterminalSymbolDerivation getResult() {
 		return state.getResult();
 	}
@@ -77,7 +63,6 @@ public class Parser {
 	/**
 	 * Extract the next token from the token stream.
 	 * 
-	 * @return
 	 * @throws IOException
 	 */
 	private int nextToken() throws IOException {
@@ -101,7 +86,6 @@ public class Parser {
 	/**
 	 * The parser.
 	 * 
-	 * @return
 	 * @throws IOException
 	 */
 	private void parse(final Sort start) throws IOException {
