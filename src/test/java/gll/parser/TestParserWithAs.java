@@ -78,4 +78,12 @@ public class TestParserWithAs extends TestParser {
     public final void testExample05() throws IOException {
         assertRejected(S, "aaaaabaaaaa");
     }
+
+    public static void main(String[] args) throws IOException {
+        System.out.println("foo");
+        TestParserWithAs foo = new TestParserWithAs();
+        foo.setUp();
+        foo.testExample03();
+        System.out.println("bar");
+    }
 }

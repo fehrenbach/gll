@@ -3,6 +3,7 @@
  */
 package gll.grammar;
 
+import com.oracle.truffle.api.frame.VirtualFrame;
 import gll.gss.Stack;
 import gll.parser.State;
 
@@ -90,7 +91,9 @@ public abstract class TerminalSymbol extends Symbol {
 	 * accept the current token or not. If the current token is accepted, a
 	 * parser process is scheduled to continue parsing after the token.
 	 * </p>
-	 * 
+     *
+     * @param truffleFrame
+     *            the Truffle frame, needed for Truffle internals, probably unused
 	 * @param state
 	 *            the parser state
 	 * @param frame
@@ -99,7 +102,7 @@ public abstract class TerminalSymbol extends Symbol {
 	 *            the current token
 	 */
 	@Override
-	public void call(final State state, final Stack frame, final int codepoint) {
+	public void call(VirtualFrame truffleFrame, final State state, final Stack frame, final int codepoint) {
 		if (accept(codepoint)) {
 			state.scheduleLater(frame, state.createTokenDerivation());
 		}

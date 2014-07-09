@@ -3,6 +3,7 @@
  */
 package gll.grammar;
 
+import com.oracle.truffle.api.frame.VirtualFrame;
 import gll.gss.Stack;
 import gll.parser.State;
 
@@ -11,7 +12,7 @@ import gll.parser.State;
  * 
  * @author Tillmann Rendel
  */
-public abstract class Symbol {
+public abstract class Symbol extends TruffleizedGrammarNode {
 	/**
 	 * A human-readable name, used for debugging and error messages.
 	 */
@@ -29,7 +30,8 @@ public abstract class Symbol {
 
 	/**
 	 * Process this symbol during parsing.
-	 * 
+	 * @param truffleFrame
+     *            the Truffle frame, needed for Truffle internals, probably unused
 	 * @param state
 	 *            the parser state
 	 * @param frame
@@ -37,7 +39,7 @@ public abstract class Symbol {
 	 * @param codepoint
 	 *            the current token
 	 */
-	public abstract void call(State state, Stack frame, int codepoint);
+	public abstract void call(VirtualFrame truffleFrame, State state, Stack frame, int codepoint);
 
 	@Override
 	public String toString() {

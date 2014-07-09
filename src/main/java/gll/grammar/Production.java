@@ -3,6 +3,7 @@
  */
 package gll.grammar;
 
+import com.oracle.truffle.api.frame.VirtualFrame;
 import gll.gss.Stack;
 import gll.parser.State;
 import gll.sppf.DerivationLabel;
@@ -11,16 +12,16 @@ import gll.sppf.Unary;
 /**
  * @author Tillmann Rendel
  */
-public class Production implements DerivationLabel {
+public class Production extends TruffleizedGrammarNode implements DerivationLabel {
 	/**
 	 * The first grammar slot in this production.
 	 */
-	final Slot first;
+	@Child Slot first;
 
 	/**
 	 * The syntactic sort this production is parsing.
 	 */
-	final Sort sort;
+	@Child Sort sort;
 
 	/**
 	 * Create a production from a sequence of symbols.
@@ -40,6 +41,8 @@ public class Production implements DerivationLabel {
 		}
 
 		first = slot;
+
+        adoptChildren();
 	}
 
 	public void appendPrefix(final Slot slot, final StringBuilder prefix) {
@@ -69,7 +72,7 @@ public class Production implements DerivationLabel {
 	 * @param callee
 	 *            the stack frame to use for the process.
 	 */
-	public void schedule(final State state, final Stack callee) {
+	public void schedule(VirtualFrame truffleFrame, final State state, final Stack callee) {
 		state.scheduleNow(first, callee, state.createEmpty());
 	}
 

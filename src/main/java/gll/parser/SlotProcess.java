@@ -3,6 +3,9 @@
  */
 package gll.parser;
 
+import com.oracle.truffle.api.CallTarget;
+import com.oracle.truffle.api.Truffle;
+import com.oracle.truffle.api.frame.VirtualFrame;
 import gll.grammar.Slot;
 import gll.gss.Stack;
 import gll.sppf.Intermediate;
@@ -13,15 +16,32 @@ import gll.sppf.Intermediate;
  * @author Tillmann Rendel
  */
 public class SlotProcess extends Process {
+    private class RootNode extends com.oracle.truffle.api.nodes.RootNode {
+        @Child Slot slot;
+
+        public RootNode(Slot slot) {
+            this.slot = slot;
+        }
+
+        @Override
+        public Object execute(VirtualFrame frame) {
+            Object[] arguments = frame.getArguments();
+            State state = (State) arguments[0];
+            int codepoint = (int) arguments[1];
+            slot.parse(frame, state, stack, derivation, codepoint);
+            return null;
+        }
+    }
+
 	/**
 	 * Current derivation.
 	 */
 	private final Intermediate<?> derivation;
 
 	/**
-	 * The grammar slot we have to parse next
+	 * This encapsulates the Slot we have to parse next
 	 */
-	private final Slot slot;
+	private final CallTarget callTarget;
 
 	/**
 	 * Create Descriptor.
@@ -33,7 +53,7 @@ public class SlotProcess extends Process {
 	 */
 	public SlotProcess(final Slot slot, final Stack stack, final Intermediate<?> derivation) {
 		super(stack);
-		this.slot = slot;
+		this.callTarget = Truffle.getRuntime().createCallTarget(new RootNode(slot));
 		this.derivation = derivation;
 	}
 
@@ -47,6 +67,6 @@ public class SlotProcess extends Process {
 	 */
 	@Override
 	public void execute(final State state, final int codepoint) {
-		slot.parse(state, stack, derivation, codepoint);
+        callTarget.call(state, codepoint);
 	}
 }

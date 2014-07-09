@@ -3,6 +3,7 @@
  */
 package gll.grammar;
 
+import com.oracle.truffle.api.frame.VirtualFrame;
 import gll.gss.Stack;
 import gll.parser.State;
 import gll.sppf.*;
@@ -15,7 +16,7 @@ public class SortReturnSlot extends Slot {
 	/**
 	 * The production this slot is associated with.
 	 */
-	private final Production production;
+	@Child private Production production;
 
 	/**
 	 * Create ReturnSlot.
@@ -25,6 +26,7 @@ public class SortReturnSlot extends Slot {
 	 */
 	public SortReturnSlot(final Production production) {
 		this.production = production;
+        adoptChildren();
 	}
 
     @Override
@@ -60,8 +62,10 @@ public class SortReturnSlot extends Slot {
 	 * This implementation schedules processes at the return addresses according
 	 * to the stack frame of the current process.
 	 * </p>
-	 * 
-	 * @param state
+     *
+ 	 * @param truffleFrame
+     *            the Truffle frame, needed for Truffle internals, probably unused
+     * @param state
 	 *            the parser state
 	 * @param frame
 	 *            the stack frame of the current parser process
@@ -71,7 +75,7 @@ public class SortReturnSlot extends Slot {
 	 *            the current codepoint to parse
 	 */
 	@Override
-	public void parse(final State state, final Stack frame, final Intermediate<?> derivation, final int codepoint) {
+	public void parse(VirtualFrame truffleFrame, final State state, final Stack frame, final Intermediate<?> derivation, final int codepoint) {
 		final Unary wrapped = new Unary(production, derivation);
 		final NonterminalSymbolDerivation result = state.createNonterminalSymbolDerivation(production.getSort(),
 				derivation.getFirst(), wrapped);

@@ -3,6 +3,7 @@
  */
 package gll.grammar;
 
+import com.oracle.truffle.api.frame.VirtualFrame;
 import gll.gss.Stack;
 import gll.parser.State;
 import gll.sppf.Intermediate;
@@ -18,12 +19,12 @@ public class SymbolSlot extends Slot {
 	/**
 	 * The next slot.
 	 */
-	private final Slot next;
+	@Child private Slot next;
 
 	/**
 	 * The action.
 	 */
-	private final Symbol symbol;
+	@Child private Symbol symbol;
 
 	/**
 	 * Create a symbol slot.
@@ -37,6 +38,7 @@ public class SymbolSlot extends Slot {
 		super();
 		this.symbol = symbol;
 		this.next = next;
+        adoptChildren();
 	}
 
 	/**
@@ -84,8 +86,10 @@ public class SymbolSlot extends Slot {
 	 * This implementation parses according to the symbol this grammar slot is
 	 * associated with.
 	 * </p>
-	 * 
-	 * @param state
+     *
+     * @param truffleFrame
+     *            the Truffle frame, needed for Truffle internals, probably unused
+     * @param state
 	 *            the parser state
 	 * @param caller
 	 *            the stack frame of the current parser process
@@ -95,8 +99,8 @@ public class SymbolSlot extends Slot {
 	 *            the current codepoint to parse
 	 */
 	@Override
-	public void parse(final State state, final Stack caller, final Intermediate<?> derivation, final int codepoint) {
+	public void parse(VirtualFrame truffleFrame, final State state, final Stack caller, final Intermediate<?> derivation, final int codepoint) {
 		final Stack callee = state.push(next, caller, state.getPosition(), derivation);
-		symbol.call(state, callee, codepoint);
+		symbol.call(truffleFrame, state, callee, codepoint);
 	}
 }

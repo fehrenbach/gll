@@ -3,6 +3,7 @@
  */
 package gll.grammar;
 
+import com.oracle.truffle.api.frame.VirtualFrame;
 import gll.gss.Stack;
 import gll.parser.State;
 import gll.sppf.DerivationLabel;
@@ -15,7 +16,7 @@ import gll.sppf.SymbolDerivation;
  * 
  * @author Tillmann Rendel
  */
-public abstract class Slot implements DerivationLabel {
+public abstract class Slot extends TruffleizedGrammarNode implements DerivationLabel {
 	/**
 	 * Create Slot.
 	 */
@@ -37,8 +38,10 @@ public abstract class Slot implements DerivationLabel {
 
 	/**
 	 * Parse according to this slot.
-	 * 
-	 * @param state
+	 *
+ 	 * @param truffleFrame
+     *            the Truffle frame, needed for Truffle internals, probably unused
+     * @param state
 	 *            the parser state
 	 * @param frame
 	 *            the stack frame of the current parser process
@@ -47,7 +50,7 @@ public abstract class Slot implements DerivationLabel {
 	 * @param codepoint
 	 *            the current codepoint to parse
 	 */
-	public abstract void parse(State state, Stack frame, Intermediate<?> derivation, int codepoint);
+	public abstract void parse(VirtualFrame truffleFrame, State state, Stack frame, Intermediate<?> derivation, int codepoint);
 
 	@Override
 	public String toString() {
