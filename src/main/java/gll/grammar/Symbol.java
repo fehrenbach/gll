@@ -32,15 +32,8 @@ public abstract class Symbol {
 	 * 
 	 * @param state
 	 *            the parser state
-	 * @param caller
+	 * @param frame
 	 *            the stack frame of the running parser process
-	 * @param derivation
-	 *            the current derivation
-	 * @param previous
-	 *            the grammar slot that contains the call to this symbol
-	 * @param next
-	 *            where to continue parsing after this symbol has been fully
-	 *            processed
 	 * @param codepoint
 	 *            the current token
 	 */

@@ -74,13 +74,8 @@ public class Sort extends Symbol implements DerivationLabel {
 	 * 
 	 * @param state
 	 *            the parser state
-	 * @param caller
+	 * @param frame
 	 *            the stack frame of the running parser process
-	 * @param derivation
-	 *            the current derivation
-	 * @param previous
-	 *            where to continue parsing after this symbol has been fully
-	 *            processed
 	 * @param codepoint
 	 *            the current token
 	 */
