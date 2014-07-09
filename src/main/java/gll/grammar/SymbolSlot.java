@@ -87,7 +87,7 @@ public class SymbolSlot extends Slot {
 	 * 
 	 * @param state
 	 *            the parser state
-	 * @param frame
+	 * @param caller
 	 *            the stack frame of the current parser process
 	 * @param derivation
 	 *            the current derivation

@@ -5,16 +5,13 @@ package gll.grammar;
 
 import gll.gss.Stack;
 import gll.parser.State;
-import gll.sppf.DerivationLabel;
-import gll.sppf.Intermediate;
-import gll.sppf.NonterminalSymbolDerivation;
-import gll.sppf.Unary;
+import gll.sppf.*;
 
 /**
  * @author Tillmann Rendel
  * 
  */
-public class SortReturnSlot extends ReturnSlot {
+public class SortReturnSlot extends Slot {
 	/**
 	 * The production this slot is associated with.
 	 */
@@ -23,26 +20,28 @@ public class SortReturnSlot extends ReturnSlot {
 	/**
 	 * Create ReturnSlot.
 	 * 
-	 * @param the
-	 *            production this slot is associated with.
+	 * @param production
+     *            the production this slot is associated with.
 	 */
 	public SortReturnSlot(final Production production) {
 		this.production = production;
 	}
 
-	/**
+    @Override
+    public void appendPrefix(Slot slot, StringBuilder prefix) {
+    }
+
+    /**
 	 * {@inheritDoc}
 	 */
 	@Override
 	public void appendSuffix(final Slot slot, final StringBuilder prefix, final StringBuilder suffix) {
-		super.appendSuffix(slot, prefix, suffix);
 		production.appendPrefix(slot, prefix);
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
-	@Override
 	public DerivationLabel getLabel() {
 		return production.getSort();
 	}
@@ -78,4 +77,17 @@ public class SortReturnSlot extends ReturnSlot {
 				derivation.getFirst(), wrapped);
 		frame.schedule(state, result, codepoint);
 	}
+
+    /*
+* (non-Javadoc)
+*
+* @see
+* fomegastar.syntax.parser.Slot#createDerivation(fomegastar.syntax.parser
+* .Derivation, fomegastar.syntax.parser.Derivation)
+*/
+    @Override
+    public IntermediateCons createDerivation(final State state, final Intermediate<?> lhs,
+            final SymbolDerivation<?, ?> rhs) {
+        return state.append(this, lhs, rhs);
+    }
 }
