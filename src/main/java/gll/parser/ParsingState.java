@@ -1,35 +1,19 @@
 package gll.parser;
 
+import cache.Cache2;
+import gll.grammar.Grammar;
 import gll.grammar.Slot;
-import gll.grammar.Sort;
+import gll.grammar.SortIdentifier;
 import gll.gss.Frame;
 import gll.gss.Initial;
 import gll.gss.Link;
 import gll.gss.Stack;
-import gll.sppf.AfterInput;
-import gll.sppf.BeforeInput;
-import gll.sppf.Binary;
-import gll.sppf.InputSymbol;
-import gll.sppf.Intermediate;
-import gll.sppf.IntermediateCons;
-import gll.sppf.IntermediateEmpty;
-import gll.sppf.NonterminalSymbolDerivation;
-import gll.sppf.Position;
-import gll.sppf.SymbolDerivation;
-import gll.sppf.TerminalSymbolDerivation;
-import gll.sppf.Unary;
+import gll.sppf.*;
 import graph.dot.GraphBuilder;
 
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
-import java.util.ArrayDeque;
-import java.util.Deque;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
-
-import cache.Cache2;
+import java.util.*;
 
 /**
  * The state of a GLL parser.
@@ -103,7 +87,7 @@ public class ParsingState implements State {
 	/**
 	 * The start symbol of the grammar we are parsing.
 	 */
-	public Sort start;
+	public SortIdentifier start;
 
 	/**
 	 * The derivation associated with the current token.
@@ -144,12 +128,12 @@ public class ParsingState implements State {
 	 * A cache to avoid recreating identical derivations for nonterminal
 	 * symbols.
 	 */
-	private final Cache2<Sort, Position, NonterminalSymbolDerivation> nonterminalSymbolDerivations = new Cache2<Sort, Position, NonterminalSymbolDerivation>() {
+	private final Cache2<SortIdentifier, Position, NonterminalSymbolDerivation> nonterminalSymbolDerivations = new Cache2<SortIdentifier, Position, NonterminalSymbolDerivation>() {
 		/**
 		 * {@inheritDoc}
 		 */
 		@Override
-		protected NonterminalSymbolDerivation compute(final Sort sort, final Position first) {
+		protected NonterminalSymbolDerivation compute(final SortIdentifier sort, final Position first) {
 			return new NonterminalSymbolDerivation(sort, first, previous);
 		}
 	};
@@ -164,7 +148,11 @@ public class ParsingState implements State {
 	 */
 	private NonterminalSymbolDerivation result;
 
-	/**
+    public ParsingState(Grammar grammar) {
+        this.grammar = grammar;
+    }
+
+    /**
 	 * {@inheritDoc}
 	 */
 	@Override
@@ -191,7 +179,7 @@ public class ParsingState implements State {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public NonterminalSymbolDerivation createNonterminalSymbolDerivation(final Sort sort, final Position first,
+	public NonterminalSymbolDerivation createNonterminalSymbolDerivation(final SortIdentifier sort, final Position first,
 			final Unary derivation) {
 		final NonterminalSymbolDerivation result = nonterminalSymbolDerivations.apply(sort, first);
 		result.add(derivation);
@@ -361,4 +349,10 @@ public class ParsingState implements State {
 			e.printStackTrace();
 		}
 	}
+
+    private final Grammar grammar;
+
+    public Grammar getGrammar() {
+        return grammar;
+    }
 }

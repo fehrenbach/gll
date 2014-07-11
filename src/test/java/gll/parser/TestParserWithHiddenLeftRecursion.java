@@ -3,13 +3,11 @@
  */
 package gll.parser;
 
-import gll.grammar.Sort;
-import gll.grammar.TerminalSymbol;
-
-import java.io.IOException;
-
+import gll.grammar.*;
 import org.junit.Before;
 import org.junit.Test;
+
+import java.io.IOException;
 
 /**
  * Test that the parser correctly handles a grammar with hidden left-recursion.
@@ -27,29 +25,33 @@ import org.junit.Test;
  * @author Tillmann Rendel
  */
 public class TestParserWithHiddenLeftRecursion extends TestParser {
-	private Sort S = new Sort("S");
+	private SortIdentifier S = new SortIdentifier("S");
 
 	/**
 	 * Create the grammar.
 	 */
 	@Before
 	public void setUp() {
-		final Sort B = new Sort("B");
-		final Sort C = new Sort("C");
+        g = new Grammar();
+		final SortIdentifier B = new SortIdentifier("B");
+		final SortIdentifier C = new SortIdentifier("C");
 
 		final TerminalSymbol a = TerminalSymbol.singleton('a');
 		final TerminalSymbol b = TerminalSymbol.singleton('b');
 		final TerminalSymbol d = TerminalSymbol.singleton('d');
 
-		S.add(C, a);
-		S.add(d);
+        g.addProductionsToSort(S,
+                new Production(S, new SortCall(C), a),
+                new Production(S, d));
 
-		B.add();
-		B.add(a);
+        g.addProductionsToSort(B,
+                new Production(B),
+                new Production(B, a));
 
-		C.add(b);
-		C.add(B, C, b);
-		C.add(b, b);
+        g.addProductionsToSort(C,
+                new Production(C, b),
+                new Production(C, new SortCall(B), new SortCall(C), b),
+                new Production(C, b, b));
 	}
 
 	/**

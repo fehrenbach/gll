@@ -3,8 +3,8 @@
  */
 package gll.grammar;
 
-import gll.sppf.Unary;
 import gll.sppf.SymbolDerivation;
+import gll.sppf.Unary;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,7 +22,7 @@ public class ForwardingProduction extends Production {
 	 * @param sort
 	 * @param symbols
 	 */
-	public ForwardingProduction(final Sort sort, final int index, final Symbol... symbols) {
+	public ForwardingProduction(final SortIdentifier sort, final int index, final Symbol... symbols) {
 		super(sort, symbols);
 		this.index = index;
 	}

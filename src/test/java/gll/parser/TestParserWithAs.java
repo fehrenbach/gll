@@ -3,25 +3,24 @@
  */
 package gll.parser;
 
-import gll.grammar.Sort;
-import gll.grammar.TerminalSymbol;
+import gll.grammar.*;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.io.IOException;
 
-import static gll.grammar.common.Characters.*;
-
 public class TestParserWithAs extends TestParser {
-	private final Sort S = new Sort("S");
+    private SortIdentifier S = new SortIdentifier("S");
 
 	/**
 	 * Create the grammar.
 	 */
 	@Before
 	public void setUp() {
-        S.add();
-		S.add(TerminalSymbol.singleton('a'), S);
+        g = new Grammar();
+        g.addProductionsToSort(S,
+                new Production(S),
+                new Production(S, TerminalSymbol.singleton('a'), new SortCall(S)));
 	}
 
 	/**

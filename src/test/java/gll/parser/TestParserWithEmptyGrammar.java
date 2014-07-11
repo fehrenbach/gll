@@ -3,12 +3,12 @@
  */
 package gll.parser;
 
-import gll.grammar.Sort;
-
-import java.io.IOException;
-
+import gll.grammar.Grammar;
+import gll.grammar.SortIdentifier;
 import org.junit.Before;
 import org.junit.Test;
+
+import java.io.IOException;
 
 /**
  * Test that the parser correctly handles the empty grammar.
@@ -24,13 +24,15 @@ import org.junit.Test;
  * @author Tillmann Rendel
  */
 public class TestParserWithEmptyGrammar extends TestParser {
-	private Sort S = new Sort("S");
+	private SortIdentifier S = new SortIdentifier("S");
 
 	/**
 	 * Create the grammar.
 	 */
 	@Before
 	public void setUp() {
+        g = new Grammar();
+        g.addProductionsToSort(S);
 	}
 
 	/**

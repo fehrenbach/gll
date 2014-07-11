@@ -3,13 +3,11 @@
  */
 package gll.parser;
 
-import gll.grammar.Sort;
-import gll.grammar.TerminalSymbol;
-
-import java.io.IOException;
-
+import gll.grammar.*;
 import org.junit.Before;
 import org.junit.Test;
+
+import java.io.IOException;
 
 /**
  * Test that the parser correctly handles the grammar we used on the whiteboard
@@ -23,22 +21,25 @@ import org.junit.Test;
  * @author Tillmann Rendel
  */
 public class TestParserWithWhiteboardExample extends TestParser {
-	private final Sort S = new Sort("S");
+	private final SortIdentifier S = new SortIdentifier("S");
 
 	/**
 	 * Create the grammar.
 	 */
 	@Before
 	public void setUp() {
-		final Sort A = new Sort("A");
+        g = new Grammar();
+		final SortIdentifier A = new SortIdentifier("A");
 
 		final TerminalSymbol x = TerminalSymbol.singleton('x');
 
-		S.add(A, S);
-		S.add();
+        g.addProductionsToSort(S,
+                new Production(S, new SortCall(A), new SortCall(S)),
+                new Production(S));
 
-		A.add(x);
-		A.add();
+        g.addProductionsToSort(A,
+                new Production(A, x),
+                new Production(A));
 	}
 
 	/**

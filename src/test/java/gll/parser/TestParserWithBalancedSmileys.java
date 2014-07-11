@@ -3,17 +3,16 @@
  */
 package gll.parser;
 
-import static gll.grammar.common.Characters.COLON;
-import static gll.grammar.common.Characters.LETTER;
-import static gll.grammar.common.Characters.LPAREN;
-import static gll.grammar.common.Characters.RPAREN;
-import static gll.grammar.common.Characters.SPACE;
-import gll.grammar.Sort;
+import gll.grammar.Grammar;
+import gll.grammar.Production;
+import gll.grammar.SortCall;
+import gll.grammar.SortIdentifier;
+import org.junit.Before;
+import org.junit.Test;
 
 import java.io.IOException;
 
-import org.junit.Before;
-import org.junit.Test;
+import static gll.grammar.common.Characters.*;
 
 /**
  * Test that the parser correctly handles the "balanced smileys" grammar:
@@ -37,25 +36,31 @@ import org.junit.Test;
  * @author Tillmann Rendel
  */
 public class TestParserWithBalancedSmileys extends TestParser {
-	private final Sort S = new Sort("S");
+	private final SortIdentifier S = new SortIdentifier("S");
 
 	/**
 	 * Create the grammar.
 	 */
 	@Before
 	public void setUp() {
-		final Sort P = new Sort("P");
+        g = new Grammar();
 
-		S.add();
-		S.add(LETTER);
-		S.add(SPACE);
-		S.add(COLON);
-		S.add(COLON, P);
-		S.add(LPAREN, S, RPAREN);
-		S.add(S, S);
+		final SortIdentifier P = new SortIdentifier("P");
 
-		P.add(LPAREN);
-		P.add(RPAREN);
+
+
+		g.addProductionsToSort(S,
+                new Production(S),
+                new Production(S, LETTER),
+                new Production(S, SPACE),
+                new Production(S, COLON),
+                new Production(S, COLON, new SortCall(P)),
+                new Production(S, LPAREN, new SortCall(S), RPAREN),
+                new Production(S, new SortCall(S), new SortCall(S)));
+
+        g.addProductionsToSort(P,
+                new Production(P, LPAREN),
+                new Production(P, RPAREN));
 	}
 
 	/**

@@ -3,19 +3,13 @@
  */
 package gll.parser;
 
+import gll.grammar.Grammar;
 import gll.grammar.Slot;
-import gll.grammar.Sort;
+import gll.grammar.SortIdentifier;
 import gll.gss.Frame;
 import gll.gss.Initial;
 import gll.gss.Stack;
-import gll.sppf.Intermediate;
-import gll.sppf.IntermediateCons;
-import gll.sppf.IntermediateEmpty;
-import gll.sppf.NonterminalSymbolDerivation;
-import gll.sppf.Position;
-import gll.sppf.SymbolDerivation;
-import gll.sppf.TerminalSymbolDerivation;
-import gll.sppf.Unary;
+import gll.sppf.*;
 
 /**
  * An interface to the state of a GLL parser.
@@ -52,8 +46,6 @@ public interface State {
 	 * I think this function shows up in the paper on GLL parsing?
 	 * </p>
 	 * 
-	 * @param slot
-	 *            the current grammar slot
 	 * @return empty derivation
 	 */
 	IntermediateEmpty createEmpty();
@@ -69,7 +61,7 @@ public interface State {
 	 *            the derivation for the production
 	 * @return a derivation for the sort
 	 */
-	NonterminalSymbolDerivation createNonterminalSymbolDerivation(final Sort sort, final Position first,
+	NonterminalSymbolDerivation createNonterminalSymbolDerivation(final SortIdentifier sort, final Position first,
 			final Unary derivation);
 
 	/**
@@ -115,7 +107,7 @@ public interface State {
 	 * <p>
 	 * We have to remember the popped results because we want to consider them
 	 * if we later link additional parent frames to the frame. See
-	 * {@link #push(Slot, Stack, int, IntermediateCons)}.
+	 * {@link #push(Slot, Stack, int, gll.sppf.Intermediate)}.
 	 * </p>
 	 * 
 	 * @param frame
@@ -190,4 +182,5 @@ public interface State {
 	 */
 	void writeGSS(final String file);
 
+    Grammar getGrammar();
 }

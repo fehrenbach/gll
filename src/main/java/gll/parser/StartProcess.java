@@ -6,7 +6,9 @@ package gll.parser;
 import com.oracle.truffle.api.CallTarget;
 import com.oracle.truffle.api.Truffle;
 import com.oracle.truffle.api.frame.VirtualFrame;
-import gll.grammar.Sort;
+import gll.grammar.SortCall;
+import gll.grammar.SortIdentifier;
+import gll.grammar.Symbol;
 import gll.gss.Stack;
 
 /**
@@ -14,11 +16,14 @@ import gll.gss.Stack;
  * 
  */
 public class StartProcess extends Process {
-    private class RootNode extends com.oracle.truffle.api.nodes.RootNode {
-        @Child Sort sort;
+    private final SortIdentifier sort;
 
-        public RootNode(Sort sort) {
-            this.sort = sort;
+    private class RootNode extends com.oracle.truffle.api.nodes.RootNode {
+        @Child
+        Symbol sort;
+
+        public RootNode(SortIdentifier sort) {
+            this.sort = new SortCall(sort);
         }
 
         @Override
@@ -40,10 +45,11 @@ public class StartProcess extends Process {
 	 * @param stack
 	 * @param sort
 	 */
-	public StartProcess(final Stack stack, final Sort sort) {
+	public StartProcess(final Stack stack, final SortIdentifier sort) {
 		super(stack);
 		this.callTarget = Truffle.getRuntime().createCallTarget(new RootNode(sort));
-	}
+        this.sort = sort;
+    }
 
 	/**
 	 * {@inheritDoc}

@@ -51,7 +51,7 @@ public class SortReturnSlot extends Slot {
 	/**
 	 * @return
 	 */
-	public Sort getSort() {
+	public SortIdentifier getSort() {
 		return production.getSort();
 	}
 

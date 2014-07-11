@@ -3,7 +3,7 @@
  */
 package gll.sppf;
 
-import gll.grammar.Sort;
+import gll.grammar.SortIdentifier;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -14,7 +14,7 @@ import java.util.Set;
  * 
  * @author Tillmann Rendel
  */
-public class NonterminalSymbolDerivation extends SymbolDerivation<Sort, Unary> {
+public class NonterminalSymbolDerivation extends SymbolDerivation<SortIdentifier, Unary> {
 
 	private final Set<Unary> children = new HashSet<Unary>();
 
@@ -29,7 +29,7 @@ public class NonterminalSymbolDerivation extends SymbolDerivation<Sort, Unary> {
 	 * @param first
 	 * @param last
 	 */
-	public NonterminalSymbolDerivation(final Sort label, final Position first, final Position last) {
+	public NonterminalSymbolDerivation(final SortIdentifier label, final Position first, final Position last) {
 		super(label);
 		this.first = first;
 		this.last = last;

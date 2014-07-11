@@ -3,14 +3,16 @@
  */
 package gll.parser;
 
-import static org.junit.Assert.assertTrue;
-import gll.grammar.Sort;
+import gll.grammar.Grammar;
+import gll.grammar.Production;
+import gll.grammar.SortIdentifier;
 import gll.sppf.SymbolDerivation;
+import org.junit.Before;
+import org.junit.Test;
 
 import java.io.IOException;
 
-import org.junit.Before;
-import org.junit.Test;
+import static org.junit.Assert.assertTrue;
 
 /**
  * Test that the parser correctly handles the grammar that accepts only the
@@ -27,14 +29,17 @@ import org.junit.Test;
  * @author Tillmann Rendel
  */
 public class TestParserWithSingletonGrammar extends TestParser {
-	private final Sort S = new Sort("S");
+	private final SortIdentifier S = new SortIdentifier("S");
 
 	/**
 	 * Create the grammar.
 	 */
 	@Before
 	public void setUp() {
-		S.add();
+        g = new Grammar();
+
+        g.addProductionsToSort(S,
+                new Production(S));
 	}
 
 	/**

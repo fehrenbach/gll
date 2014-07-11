@@ -21,7 +21,7 @@ public class Production extends TruffleizedGrammarNode implements DerivationLabe
 	/**
 	 * The syntactic sort this production is parsing.
 	 */
-	@Child Sort sort;
+	private final SortIdentifier sort;
 
 	/**
 	 * Create a production from a sequence of symbols.
@@ -31,7 +31,7 @@ public class Production extends TruffleizedGrammarNode implements DerivationLabe
 	 * @param symbols
 	 *            the symbols that form this production.
 	 */
-	public Production(final Sort sort, final Symbol... symbols) {
+	public Production(final SortIdentifier sort, final Symbol... symbols) {
 		this.sort = sort;
 
 		Slot slot = new SortReturnSlot(this);
@@ -60,7 +60,7 @@ public class Production extends TruffleizedGrammarNode implements DerivationLabe
 	 * 
 	 * @see fomegastar.syntax.parser.AbstractProduction#getSort()
 	 */
-	public Sort getSort() {
+	public SortIdentifier getSort() {
 		return sort;
 	}
 
