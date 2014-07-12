@@ -3,10 +3,7 @@ package gll.grammar;
 import com.oracle.truffle.api.Assumption;
 import com.oracle.truffle.api.Truffle;
 import com.oracle.truffle.api.frame.VirtualFrame;
-import com.oracle.truffle.api.nodes.DirectCallNode;
-import com.oracle.truffle.api.nodes.InvalidAssumptionException;
-import com.oracle.truffle.api.nodes.Node;
-import com.oracle.truffle.api.nodes.RootNode;
+import com.oracle.truffle.api.nodes.*;
 import gll.gss.Stack;
 import gll.parser.State;
 
@@ -35,7 +32,7 @@ public class SortCallCached extends Symbol {
             adoptChildren();
         }
 
-        @Override
+        @Override @ExplodeLoop
         public Object execute(VirtualFrame truffleFrame) {
             State state = stateArgument.execute(truffleFrame);
             Stack frame = frameArgument.execute(truffleFrame);
