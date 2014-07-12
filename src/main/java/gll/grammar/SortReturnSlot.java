@@ -16,7 +16,7 @@ public class SortReturnSlot extends Slot {
 	/**
 	 * The production this slot is associated with.
 	 */
-	@Child private Production production;
+	private final Production production;
 
 	/**
 	 * Create ReturnSlot.
