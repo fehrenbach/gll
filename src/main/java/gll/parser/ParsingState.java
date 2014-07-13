@@ -1,7 +1,6 @@
 package gll.parser;
 
 import cache.Cache2;
-import gll.grammar.Grammar;
 import gll.grammar.Slot;
 import gll.grammar.SortIdentifier;
 import gll.gss.Frame;
@@ -147,10 +146,6 @@ public class ParsingState implements State {
 	 * The current result of parsing.
 	 */
 	private NonterminalSymbolDerivation result;
-
-    public ParsingState(Grammar grammar) {
-        this.grammar = grammar;
-    }
 
     /**
 	 * {@inheritDoc}
@@ -349,10 +344,4 @@ public class ParsingState implements State {
 			e.printStackTrace();
 		}
 	}
-
-    private final Grammar grammar;
-
-    public Grammar getGrammar() {
-        return grammar;
-    }
 }

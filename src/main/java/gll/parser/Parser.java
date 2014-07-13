@@ -3,7 +3,6 @@
  */
 package gll.parser;
 
-import gll.grammar.Grammar;
 import gll.grammar.SortIdentifier;
 import gll.gss.Initial;
 import gll.sppf.NonterminalSymbolDerivation;
@@ -21,8 +20,8 @@ public class Parser {
 	 * 
 	 * @throws IOException
 	 */
-	public static NonterminalSymbolDerivation parse(final SortIdentifier sort, final Reader reader, final Grammar grammar) throws IOException {
-		final Parser parser = new Parser(reader, grammar);
+	public static NonterminalSymbolDerivation parse(final SortIdentifier sort, final Reader reader) throws IOException {
+		final Parser parser = new Parser(reader);
 		parser.parse(sort);
 		return parser.getResult();
 	}
@@ -30,8 +29,8 @@ public class Parser {
 	/**
 	 * Parse the contents of a string according to a syntactic sort.
 	 */
-	public static NonterminalSymbolDerivation parse(final SortIdentifier sort, final String string, final Grammar grammar) {
-		final Parser parser = new Parser(new StringReader(string), grammar);
+	public static NonterminalSymbolDerivation parse(final SortIdentifier sort, final String string) {
+		final Parser parser = new Parser(new StringReader(string));
 		try {
 			parser.parse(sort);
 		} catch (final IOException e) {
@@ -53,9 +52,9 @@ public class Parser {
 	/**
 	 * Create Parser.
 	 */
-	private Parser(final Reader reader, Grammar grammar) {
+	private Parser(final Reader reader) {
 		this.reader = reader;
-        this.state = new ParsingState(grammar);
+        this.state = new ParsingState();
 	}
 
 	private NonterminalSymbolDerivation getResult() {

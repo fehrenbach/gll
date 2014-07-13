@@ -3,12 +3,15 @@
  */
 package gll.parser;
 
-import gll.grammar.*;
+import gll.grammar.SortIdentifier;
+import gll.grammar.TerminalSymbol;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 
 import java.io.IOException;
+
+import static gll.grammar.SortIdentifier.production;
 
 /**
  * Test that the parser correctly handles a factored version of the grammar in
@@ -36,17 +39,16 @@ public class TestParserWithFactoredGrammar extends TestParser {
 	 */
 	@Before
 	public void setUp() {
-        g = new Grammar();
-		final SortIdentifier A = new SortIdentifier("A");
+        final SortIdentifier A = new SortIdentifier("A");
 		final TerminalSymbol b = TerminalSymbol.singleton('b');
 
-        g.addProductionsToSort(S,
-                new Production(S, b),
-                new Production(S, new SortCall(S), new SortCall(S), new SortCall(A)));
+        S.setProductions(
+                production(b),
+                production(S, S, A));
 
-        g.addProductionsToSort(A,
-                new Production(A, new SortCall(S)),
-                new Production(A));
+        A.setProductions(
+                production(S),
+                production());
 	}
 
 	/**

@@ -3,7 +3,6 @@
  */
 package gll.parser;
 
-import gll.grammar.Grammar;
 import gll.grammar.SortIdentifier;
 import org.junit.Before;
 import org.junit.Test;
@@ -31,8 +30,7 @@ public class TestParserWithEmptyGrammar extends TestParser {
 	 */
 	@Before
 	public void setUp() {
-        g = new Grammar();
-        g.addProductionsToSort(S);
+        S.setProductions();
 	}
 
 	/**

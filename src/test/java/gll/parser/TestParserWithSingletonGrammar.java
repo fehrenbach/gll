@@ -3,8 +3,6 @@
  */
 package gll.parser;
 
-import gll.grammar.Grammar;
-import gll.grammar.Production;
 import gll.grammar.SortIdentifier;
 import gll.sppf.SymbolDerivation;
 import org.junit.Before;
@@ -12,6 +10,7 @@ import org.junit.Test;
 
 import java.io.IOException;
 
+import static gll.grammar.SortIdentifier.production;
 import static org.junit.Assert.assertTrue;
 
 /**
@@ -36,13 +35,10 @@ public class TestParserWithSingletonGrammar extends TestParser {
 	 */
 	@Before
 	public void setUp() {
-        g = new Grammar();
-
-        g.addProductionsToSort(S,
-                new Production(S));
+        S.setProductions(production());
 	}
 
-	/**
+    /**
 	 * Test that the empty word {@code ""} is accepted.
 	 * 
 	 * @throws IOException

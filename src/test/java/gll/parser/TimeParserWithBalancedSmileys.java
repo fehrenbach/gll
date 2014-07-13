@@ -5,6 +5,10 @@ package gll.parser;
 
 import com.google.caliper.Param;
 import com.google.caliper.SimpleBenchmark;
+import gll.grammar.SortIdentifier;
+
+import static gll.grammar.SortIdentifier.production;
+import static gll.grammar.common.Characters.*;
 
 /**
  * Benchmark the parser using various variants of the "balanced smileys"
@@ -16,7 +20,7 @@ public class TimeParserWithBalancedSmileys extends SimpleBenchmark {
 	/**
 	 * The start nonterminal symbol of the grammar.
 	 */
-	//private final Sort S = new Sort("S");
+	private final SortIdentifier S = new SortIdentifier("S");
 
 	/**
 	 * The string to be parsed.
@@ -29,24 +33,26 @@ public class TimeParserWithBalancedSmileys extends SimpleBenchmark {
 	 */
 	@Override
 	public void setUp() {
-//
-//		final Sort P = new Sort("P");
-//
-//		S.add();
-//		S.add(LETTER);
-//		S.add(SPACE);
-//		S.add(COLON);
-//		S.add(COLON, P);
-//		S.add(LPAREN, S, RPAREN);
-//		S.add(S, S);
-//
-//		P.add(LPAREN);
-//		P.add(RPAREN);
+
+		final SortIdentifier P = new SortIdentifier("P");
+
+        S.setProductions(
+                production(),
+                production(LETTER()),
+                production(SPACE()),
+                production(COLON()),
+                production(COLON(), P),
+                production(LPAREN(), S, RPAREN()),
+                production(S, S));
+
+        P.setProductions(
+                production(LPAREN()),
+                production(RPAREN()));
 	}
 
 	public void timeParser(final int reps) {
-//		for (int i = 0; i < reps; i++) {
-//			Parser.parse(S, input);
-//		}
+		for (int i = 0; i < reps; i++) {
+			Parser.parse(S, input);
+		}
 	}
 }

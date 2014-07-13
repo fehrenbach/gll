@@ -3,15 +3,13 @@
  */
 package gll.parser;
 
-import gll.grammar.Grammar;
-import gll.grammar.Production;
-import gll.grammar.SortCall;
 import gll.grammar.SortIdentifier;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.io.IOException;
 
+import static gll.grammar.SortIdentifier.production;
 import static gll.grammar.common.Characters.*;
 
 /**
@@ -43,27 +41,23 @@ public class TestParserWithBalancedSmileys extends TestParser {
 	 */
 	@Before
 	public void setUp() {
-        g = new Grammar();
-
 		final SortIdentifier P = new SortIdentifier("P");
 
+        S.setProductions(
+                production(),
+                production(LETTER()),
+                production(SPACE()),
+                production(COLON()),
+                production(COLON(), P),
+                production(LPAREN(), S, RPAREN()),
+                production(S, S));
 
-
-		g.addProductionsToSort(S,
-                new Production(S),
-                new Production(S, LETTER),
-                new Production(S, SPACE),
-                new Production(S, COLON),
-                new Production(S, COLON, new SortCall(P)),
-                new Production(S, LPAREN, new SortCall(S), RPAREN),
-                new Production(S, new SortCall(S), new SortCall(S)));
-
-        g.addProductionsToSort(P,
-                new Production(P, LPAREN),
-                new Production(P, RPAREN));
+        P.setProductions(
+                production(LPAREN()),
+                production(RPAREN()));
 	}
 
-	/**
+    /**
 	 * Test that the empty word {@code ""} is accepted.
 	 * 
 	 * @throws IOException

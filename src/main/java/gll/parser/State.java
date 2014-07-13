@@ -3,7 +3,6 @@
  */
 package gll.parser;
 
-import gll.grammar.Grammar;
 import gll.grammar.Slot;
 import gll.grammar.SortIdentifier;
 import gll.gss.Frame;
@@ -181,6 +180,4 @@ public interface State {
 	 *            the name of the file to write to
 	 */
 	void writeGSS(final String file);
-
-    Grammar getGrammar();
 }

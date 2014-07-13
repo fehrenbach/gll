@@ -18,8 +18,8 @@ public class SortCall extends Symbol {
 
     @Override
     public void call(VirtualFrame truffleFrame, State state, Stack frame, int codepoint) {
-        SortCallCached replacement = state.getGrammar().cacheSortCall(sort);
-        replace(replacement, "Called " + this);
+        SortCallCached replacement = new SortCallCached(sort);
+        replace(replacement, "Called " + this + " for the first time at this call site");
         replacement.call(truffleFrame, state, frame, codepoint);
     }
 }

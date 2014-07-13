@@ -3,11 +3,14 @@
  */
 package gll.parser;
 
-import gll.grammar.*;
+import gll.grammar.SortIdentifier;
+import gll.grammar.TerminalSymbol;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.io.IOException;
+
+import static gll.grammar.SortIdentifier.production;
 
 /**
  * Test that the parser correctly handles a (right-recursive) grammar that
@@ -36,33 +39,29 @@ public class TestParserWithRightRecursion extends TestParser {
 	 */
 	@Before
 	public void setUp() {
-        g = new Grammar();
 		final SortIdentifier HELLO = new SortIdentifier("HELLO");
 		final SortIdentifier WORLD = new SortIdentifier("WORLD");
 		final SortIdentifier SPACE = new SortIdentifier("SPACE");
 
-        g.addProductionsToSort(S,
-                new Production(S, new SortCall(HELLO), new SortCall(SPACE), new SortCall(WORLD)));
+        S.setProductions(production(HELLO, SPACE, WORLD));
 
-        g.addProductionsToSort(HELLO,
-                new Production(HELLO,
-                        TerminalSymbol.singleton('h'),
-                        TerminalSymbol.singleton('e'),
-                        TerminalSymbol.singleton('l'),
-                        TerminalSymbol.singleton('l'),
-                        TerminalSymbol.singleton('o')));
+        HELLO.setProductions(production(
+                TerminalSymbol.singleton('h'),
+                TerminalSymbol.singleton('e'),
+                TerminalSymbol.singleton('l'),
+                TerminalSymbol.singleton('l'),
+                TerminalSymbol.singleton('o')));
 
-        g.addProductionsToSort(WORLD,
-                new Production(WORLD,
-                        TerminalSymbol.singleton('w'),
-                        TerminalSymbol.singleton('o'),
-                        TerminalSymbol.singleton('r'),
-                        TerminalSymbol.singleton('l'),
-                        TerminalSymbol.singleton('d')));
+        WORLD.setProductions(production(
+                TerminalSymbol.singleton('w'),
+                TerminalSymbol.singleton('o'),
+                TerminalSymbol.singleton('r'),
+                TerminalSymbol.singleton('l'),
+                TerminalSymbol.singleton('d')));
 
-        g.addProductionsToSort(SPACE,
-                new Production(SPACE, TerminalSymbol.singleton(' ')),
-                new Production(SPACE, TerminalSymbol.singleton(' '), new SortCall(SPACE)));
+        SPACE.setProductions(
+                production(TerminalSymbol.singleton(' ')),
+                production(TerminalSymbol.singleton(' '), SPACE));
 	}
 
 	/**

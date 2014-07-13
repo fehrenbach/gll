@@ -3,12 +3,15 @@
  */
 package gll.parser;
 
-import gll.grammar.*;
+import gll.grammar.SortIdentifier;
+import gll.grammar.TerminalSymbol;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 
 import java.io.IOException;
+
+import static gll.grammar.SortIdentifier.production;
 
 /**
  * Test that the parser correctly handles a very ambiguous grammar.
@@ -32,14 +35,10 @@ public class TestParserWithVeryAmbiguousGrammar extends TestParser {
 	 */
 	@Before
 	public void setUp() {
-        g = new Grammar();
-		final TerminalSymbol b = TerminalSymbol.singleton('b');
-
-        g.addProductionsToSort(S,
-                new Production(S, b),
-                new Production(S, new SortCall(S), new SortCall(S)),
-                new Production(S, new SortCall(S), new SortCall(S), new SortCall(S))
-        );
+        S.setProductions(
+                production(TerminalSymbol.singleton('b')),
+                production(S, S),
+                production(S, S, S));
 	}
 
 	/**

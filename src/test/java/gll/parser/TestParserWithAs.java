@@ -3,11 +3,14 @@
  */
 package gll.parser;
 
-import gll.grammar.*;
+import gll.grammar.SortIdentifier;
+import gll.grammar.TerminalSymbol;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.io.IOException;
+
+import static gll.grammar.SortIdentifier.production;
 
 public class TestParserWithAs extends TestParser {
     private SortIdentifier S = new SortIdentifier("S");
@@ -17,10 +20,9 @@ public class TestParserWithAs extends TestParser {
 	 */
 	@Before
 	public void setUp() {
-        g = new Grammar();
-        g.addProductionsToSort(S,
-                new Production(S),
-                new Production(S, TerminalSymbol.singleton('a'), new SortCall(S)));
+        S.setProductions(
+                production(),
+                production(TerminalSymbol.singleton('a'), S));
 	}
 
 	/**

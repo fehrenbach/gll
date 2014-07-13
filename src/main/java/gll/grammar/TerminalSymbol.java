@@ -12,7 +12,7 @@ import gll.parser.State;
  * 
  * @author Tillmann Rendel
  */
-public abstract class TerminalSymbol extends Symbol {
+public abstract class TerminalSymbol extends Symbol implements PrettyGrammar {
 	/**
 	 * Create a terminal symbol for a character.
 	 * 
@@ -75,7 +75,7 @@ public abstract class TerminalSymbol extends Symbol {
 
 	/**
 	 * Decided whether to accept a token.
-	 * 
+	 *
 	 * @param codepoint
 	 *            the current token
 	 * @return {@code true} if the token should be accepted, {@code false}
@@ -107,4 +107,9 @@ public abstract class TerminalSymbol extends Symbol {
 			state.scheduleLater(frame, state.createTokenDerivation());
 		}
 	}
+
+    @Override
+    public Symbol toSymbol() {
+        return this;
+    }
 }
