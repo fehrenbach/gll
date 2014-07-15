@@ -23,6 +23,7 @@ class SortCallRootNode extends RootNode {
     @Children private final Production[] alternatives;
     @Child private ArgumentNode<State> stateArgument;
     @Child private ArgumentNode<Stack> frameArgument;
+    @Child private ArgumentNode codepointArgument;
 
     private final SortIdentifier sort;
 
@@ -30,6 +31,7 @@ class SortCallRootNode extends RootNode {
         this.alternatives = alternatives;
         this.stateArgument = new ArgumentNode<State>(0);
         this.frameArgument = new ArgumentNode<Stack>(1);
+        this.codepointArgument = new ArgumentNode(2);
         this.sort = sortIdentifier;
         adoptChildren();
     }
@@ -38,8 +40,9 @@ class SortCallRootNode extends RootNode {
     public Object execute(VirtualFrame truffleFrame) {
         State state = stateArgument.execute(truffleFrame);
         Stack frame = frameArgument.execute(truffleFrame);
+        int codepoint = (int) codepointArgument.execute(truffleFrame);
         for (Production production : alternatives) {
-            production.schedule(truffleFrame, state, frame);
+            production.schedule(truffleFrame, codepoint, state, frame);
         }
         return null;
     }

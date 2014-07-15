@@ -25,7 +25,7 @@ public class SortCallCached extends Symbol {
     public void call(VirtualFrame truffleFrame, State state, Stack frame, int codepoint) {
         try {
             grammarUnchanged.check();
-            directCallNode.call(truffleFrame, new Object[]{state, frame});
+            directCallNode.call(truffleFrame, new Object[]{state, frame, codepoint});
         } catch (InvalidAssumptionException e) {
             SortCall replacementNode = new SortCall(sort);
             replace(replacementNode, this + " changed");

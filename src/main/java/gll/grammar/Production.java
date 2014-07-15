@@ -72,8 +72,12 @@ public class Production extends TruffleizedGrammarNode implements DerivationLabe
 	 * @param callee
 	 *            the stack frame to use for the process.
 	 */
-	public void schedule(VirtualFrame truffleFrame, final State state, final Stack callee) {
-		state.scheduleNow(first, callee, state.createEmpty());
+	public void schedule(VirtualFrame truffleFrame, int codepoint, final State state, final Stack callee) {
+        // This used to call State.scheduleNow.
+        // Can't put it into State, because Truffle for some reason does not see that the VirtualFrame does not escape.
+        if (!state.deadNow(first, callee)) {
+            first.parse(truffleFrame, state, callee, state.createEmpty(), codepoint);
+        }
 	}
 
 	@Override
