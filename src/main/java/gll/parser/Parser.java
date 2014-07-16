@@ -3,6 +3,8 @@
  */
 package gll.parser;
 
+import com.oracle.truffle.api.CallTarget;
+import com.oracle.truffle.api.Truffle;
 import gll.grammar.SortIdentifier;
 import gll.gss.Initial;
 import gll.sppf.NonterminalSymbolDerivation;
@@ -91,7 +93,7 @@ public class Parser {
 	 */
 	public void parse(final Reader reader) throws IOException {
 		state.start = start;
-		state.active.add(new StartProcess(new Initial(), start));
+		state.active.add(Truffle.getRuntime().createCallTarget(new StartProcessRootNode(new Initial(), start)));
 
 		int codepoint;
 		do {
@@ -99,8 +101,8 @@ public class Parser {
 			state.nextToken(codepoint);
 
 			while (!state.active.isEmpty()) {
-				final Process current = state.active.poll();
-				current.execute(state, codepoint);
+                final CallTarget current = state.active.poll();
+                current.call(state, codepoint);
 			}
 		} while (codepoint >= 0);
 

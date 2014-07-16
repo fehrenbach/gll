@@ -1,6 +1,9 @@
 package gll.parser;
 
 import cache.Cache2;
+import com.oracle.truffle.api.CallTarget;
+import com.oracle.truffle.api.Truffle;
+import com.oracle.truffle.api.frame.VirtualFrame;
 import gll.grammar.Slot;
 import gll.grammar.SortIdentifier;
 import gll.gss.Frame;
@@ -28,7 +31,7 @@ public class ParsingState implements State {
 	 * process the current token.
 	 * </p>
 	 */
-	public final Deque<Process> active = new ArrayDeque<Process>();
+	public final Deque<CallTarget> active = new ArrayDeque<>();
 
 	/**
 	 * The set of already scheduled descriptors for the next token.
@@ -62,7 +65,7 @@ public class ParsingState implements State {
 	 * This set is filled during processing of the current token.
 	 * </p>
 	 */
-	public Set<FutureProcess> future = new HashSet<FutureProcess>();
+	public Set<CallTarget> future = new HashSet<>();
 
 	/**
 	 * The next position in the token stream.
@@ -292,7 +295,7 @@ public class ParsingState implements State {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public Stack push(final Slot slot, final Stack caller, final int token, final Intermediate<?> derivation) {
+	public Stack push(final VirtualFrame truffleFrame, final Slot slot, final Stack caller, final int token, final Intermediate<?> derivation, final int codepoint) {
 		Frame callee = frames.get(slot);
 		if (callee == null) {
 			callee = new Frame(slot, token);
@@ -305,7 +308,7 @@ public class ParsingState implements State {
 		final Set<SymbolDerivation<?, ?>> results = popped.get(callee);
 		if (results != null) {
 			for (final SymbolDerivation<?, ?> result : results) {
-				link.schedule(this, result, slot);
+				link.schedule(truffleFrame, this, result, slot, codepoint);
 			}
 		}
 
@@ -319,7 +322,7 @@ public class ParsingState implements State {
 	public void scheduleLater(final Stack caller, final TerminalSymbolDerivation derivation) {
 		if (!deadLater.contains(caller)) {
 			deadLater.add(caller);
-			future.add(new FutureProcess(caller, derivation));
+            future.add(Truffle.getRuntime().createCallTarget(new FutureProcessRootNode(caller, derivation)));
 		}
 	}
 
@@ -328,8 +331,8 @@ public class ParsingState implements State {
 	 */
 	@Override
 	public void scheduleNow(final Slot slot, final Stack caller, final Intermediate<?> derivation) {
-		if (!deadNow(slot, caller)) {
-			active.add(new SlotProcess(slot, caller, derivation));
+        if (!deadNow(slot, caller)) {
+            active.add(Truffle.getRuntime().createCallTarget(new SlotProcessRootNode(slot, caller, derivation)));
 		}
 	}
 

@@ -3,6 +3,7 @@
  */
 package gll.gss;
 
+import com.oracle.truffle.api.frame.VirtualFrame;
 import gll.grammar.Slot;
 import gll.parser.State;
 import gll.sppf.Intermediate;
@@ -115,11 +116,11 @@ public class Frame extends Stack {
 	 *            the current codepoint to parse
 	 */
 	@Override
-	public void schedule(final State state, final SymbolDerivation<?, ?> result, final int codepoint) {
+	public void schedule(VirtualFrame truffleFrame, final State state, final SymbolDerivation<?, ?> result, final int codepoint) {
 		state.markPopped(this, result);
 
 		for (final Link link : stacks) {
-			link.schedule(state, result, slot);
+			link.schedule(truffleFrame, state, result, slot, codepoint);
 		}
 	}
 }

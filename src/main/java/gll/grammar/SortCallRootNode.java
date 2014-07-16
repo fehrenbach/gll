@@ -29,8 +29,8 @@ class SortCallRootNode extends RootNode {
 
     public SortCallRootNode(SortIdentifier sortIdentifier, Production[] alternatives) {
         this.alternatives = alternatives;
-        this.stateArgument = new ArgumentNode<State>(0);
-        this.frameArgument = new ArgumentNode<Stack>(1);
+        this.stateArgument = new ArgumentNode<>(0);
+        this.frameArgument = new ArgumentNode<>(1);
         this.codepointArgument = new ArgumentNode(2);
         this.sort = sortIdentifier;
         adoptChildren();
