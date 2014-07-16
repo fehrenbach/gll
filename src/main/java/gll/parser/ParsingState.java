@@ -67,7 +67,7 @@ public class ParsingState implements State {
 	/**
 	 * The next position in the token stream.
 	 */
-	public Position next = BeforeInput.create();
+	public Position next;
 
 	/**
 	 * The set of stack frames that have been popped for the current token.
@@ -81,7 +81,7 @@ public class ParsingState implements State {
 	 * 0 is the position just before the first token.
 	 * </p>
 	 */
-	public int position = -1;
+	public int position;
 
 	/**
 	 * The start symbol of the grammar we are parsing.
@@ -146,6 +146,10 @@ public class ParsingState implements State {
 	 * The current result of parsing.
 	 */
 	private NonterminalSymbolDerivation result;
+
+    public ParsingState() {
+        reset();
+    }
 
     /**
 	 * {@inheritDoc}
@@ -329,7 +333,16 @@ public class ParsingState implements State {
 		}
 	}
 
-	/**
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void reset() {
+        next = BeforeInput.create();
+        position = -1;
+    }
+
+    /**
 	 * {@inheritDoc}
 	 */
 	@Override

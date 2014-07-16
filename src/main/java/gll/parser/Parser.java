@@ -21,8 +21,8 @@ public class Parser {
 	 * @throws IOException
 	 */
 	public static NonterminalSymbolDerivation parse(final SortIdentifier sort, final Reader reader) throws IOException {
-		final Parser parser = new Parser(reader);
-		parser.parse(sort);
+		final Parser parser = new Parser(sort);
+		parser.parse(reader);
 		return parser.getResult();
 	}
 
@@ -30,19 +30,19 @@ public class Parser {
 	 * Parse the contents of a string according to a syntactic sort.
 	 */
 	public static NonterminalSymbolDerivation parse(final SortIdentifier sort, final String string) {
-		final Parser parser = new Parser(new StringReader(string));
+		final Parser parser = new Parser(sort);
 		try {
-			parser.parse(sort);
+			parser.parse(new StringReader(string));
 		} catch (final IOException e) {
 			throw new RuntimeException(e);
 		}
 		return parser.getResult();
 	}
 
-	/**
-	 * The reader to access the token stream.
-	 */
-	private final Reader reader;
+    /**
+     * The start nonterminal.
+     */
+    private final SortIdentifier start;
 
 	/**
 	 * Parser state.
@@ -52,12 +52,12 @@ public class Parser {
 	/**
 	 * Create Parser.
 	 */
-	private Parser(final Reader reader) {
-		this.reader = reader;
+	public Parser(final SortIdentifier start) {
+		this.start = start;
         this.state = new ParsingState();
 	}
 
-	private NonterminalSymbolDerivation getResult() {
+	public NonterminalSymbolDerivation getResult() {
 		return state.getResult();
 	}
 
@@ -66,7 +66,7 @@ public class Parser {
 	 * 
 	 * @throws IOException
 	 */
-	private int nextToken() throws IOException {
+	private int nextToken(final Reader reader) throws IOException {
 		final int high = reader.read();
 		if (high < 0) {
 			return high;
@@ -89,13 +89,13 @@ public class Parser {
 	 * 
 	 * @throws IOException
 	 */
-	private void parse(final SortIdentifier start) throws IOException {
+	public void parse(final Reader reader) throws IOException {
 		state.start = start;
 		state.active.add(new StartProcess(new Initial(), start));
 
 		int codepoint;
 		do {
-			codepoint = nextToken();
+			codepoint = nextToken(reader);
 			state.nextToken(codepoint);
 
 			while (!state.active.isEmpty()) {
@@ -104,6 +104,15 @@ public class Parser {
 			}
 		} while (codepoint >= 0);
 
-		state.writeGSS("/home/stefan/gss.dot");
+        // Prepare state for next call to parse.
+        // We will parse as if the token stream just starts, but we keep the unchanged (and optimized) parts of the
+        // grammar AST.
+        state.reset();
+
+		// state.writeGSS("/home/stefan/gss.dot");
 	}
+
+    public void parse(final String s) throws IOException {
+        parse(new StringReader(s));
+    }
 }
