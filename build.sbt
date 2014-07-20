@@ -1,8 +1,15 @@
+scalaVersion := "2.11.1"
+
 EclipseKeys.projectFlavor := EclipseProjectFlavor.Java
 
-libraryDependencies += "com.google.caliper" % "caliper" % "0.5-rc1"
+EclipseKeys.executionEnvironment := Some(EclipseExecutionEnvironment.JavaSE18)
 
-libraryDependencies ++= Seq("com.novocode" % "junit-interface" % "0.10-M2" % "test", "junit" % "junit" % "4.8.2")
+libraryDependencies ++= Seq(
+  "com.google.caliper" % "caliper" % "0.5-rc1",
+  "com.novocode" % "junit-interface" % "0.10-M2" % "test", "junit" % "junit" % "4.8.2",
+  "com.storm-enroute" %% "scalameter" % "0.6")
+
+resolvers ++= Seq("Sonatype OSS Snapshots" at "https://oss.sonatype.org/content/repositories/releases")
 
 javacOptions := Seq("-encoding", "UTF-8")
 
