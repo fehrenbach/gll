@@ -80,11 +80,17 @@ public class TestParserWithAs extends TestParser {
         assertRejected(S, "aaaaabaaaaa");
     }
 
-    public static void main(String[] args) throws IOException {
-        System.out.println("foo");
+    public static void main(String[] args) throws IOException, InterruptedException {
         TestParserWithAs foo = new TestParserWithAs();
         foo.setUp();
-        foo.testExample03();
-        System.out.println("bar");
+        SortIdentifier S = foo.S;
+        Parser p = new Parser(S);
+        String as = "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa";
+        System.out.println("before first");
+        p.parse(as);
+        System.out.println("after first");
+        Thread.sleep(1000);
+        for (int i = 0; i < 1000; i++)
+            p.parse(as);
     }
 }
