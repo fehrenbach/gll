@@ -3,7 +3,6 @@
  */
 package gll.gss;
 
-import com.oracle.truffle.api.frame.VirtualFrame;
 import gll.parser.State;
 import gll.sppf.SymbolDerivation;
 
@@ -58,14 +57,12 @@ public class Initial extends Stack {
 	 * <p>
 	 * This implementation does nothing.
 	 * </p>
-	 *
-	 * @param state
+	 *  @param state
 	 *            the parser state
-	 * @param codepoint
-	 *            the current codepoint to parse
-	 */
+	 *
+     */
 	@Override
-	public void schedule(VirtualFrame truffleFrame, final State state, final SymbolDerivation<?, ?> result, final int codepoint) {
+	public void schedule(final State state, final SymbolDerivation<?, ?> result) {
 	}
 
 }

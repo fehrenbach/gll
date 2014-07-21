@@ -79,7 +79,7 @@ public class SortReturnSlot extends Slot {
 		final Unary wrapped = new Unary(production, derivation);
 		final NonterminalSymbolDerivation result = state.createNonterminalSymbolDerivation(production.getSort(),
 				derivation.getFirst(), wrapped);
-		frame.schedule(truffleFrame, state, result, codepoint);
+		frame.schedule(state, result);
 	}
 
     /*

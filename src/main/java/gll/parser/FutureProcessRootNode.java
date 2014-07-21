@@ -25,7 +25,7 @@ public class FutureProcessRootNode extends RootNode {
         Object[] arguments = truffleFrame.getArguments();
         ParsingState state = (ParsingState) arguments[0];
         int codepoint = (int) arguments[1];
-        stack.schedule(truffleFrame, state, derivation, codepoint);
+        stack.schedule(state, derivation);
         return null;
     }
 }

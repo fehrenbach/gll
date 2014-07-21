@@ -3,7 +3,6 @@
  */
 package gll.gss;
 
-import com.oracle.truffle.api.frame.VirtualFrame;
 import gll.grammar.Slot;
 import gll.parser.State;
 import gll.sppf.Intermediate;
@@ -107,16 +106,13 @@ public class Frame extends Stack {
 	 * This implementation schedules a process for every parent stack frame of
 	 * this stack frame.
 	 * </p>
-	 * 
-	 * @param state
+	 *  @param state
 	 *            the parser state
 	 * @param result
 	 *            the result flowing back to the caller.
-	 * @param codepoint
-	 *            the current codepoint to parse
-	 */
+     */
 	@Override
-	public void schedule(VirtualFrame truffleFrame, final State state, final SymbolDerivation<?, ?> result, final int codepoint) {
+	public void schedule(final State state, final SymbolDerivation<?, ?> result) {
 		state.markPopped(this, result);
 
 		for (final Link link : stacks) {
