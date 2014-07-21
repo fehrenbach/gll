@@ -3,7 +3,6 @@
  */
 package gll.parser;
 
-import com.oracle.truffle.api.frame.VirtualFrame;
 import gll.grammar.Slot;
 import gll.grammar.SortIdentifier;
 import gll.gss.Frame;
@@ -135,13 +134,12 @@ public interface State {
 	 * <p>
 	 * This is the function <emph>create</emph> from Scott and Johnstone (2010).
 	 * </p>
-	 * 
-	 * @param slot
+	 *  @param slot
 	 * @param caller
-	 * @param token
-	 * @param derivation
-	 */
-	Stack push(VirtualFrame truffleFrame, final Slot slot, final Stack caller, final int token, final Intermediate<?> derivation, final int codepoint);
+     * @param token
+     * @param derivation
+     */
+	Stack push(final Slot slot, final Stack caller, final int token, final Intermediate<?> derivation);
 
 	/**
 	 * Schedule a parsing process to be run after we finish processing the

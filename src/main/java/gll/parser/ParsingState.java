@@ -3,7 +3,6 @@ package gll.parser;
 import cache.Cache2;
 import com.oracle.truffle.api.CallTarget;
 import com.oracle.truffle.api.Truffle;
-import com.oracle.truffle.api.frame.VirtualFrame;
 import gll.grammar.Slot;
 import gll.grammar.SortIdentifier;
 import gll.gss.Frame;
@@ -295,7 +294,7 @@ public class ParsingState implements State {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public Stack push(final VirtualFrame truffleFrame, final Slot slot, final Stack caller, final int token, final Intermediate<?> derivation, final int codepoint) {
+	public Stack push(final Slot slot, final Stack caller, final int token, final Intermediate<?> derivation) {
 		Frame callee = frames.get(slot);
 		if (callee == null) {
 			callee = new Frame(slot, token);
@@ -308,7 +307,7 @@ public class ParsingState implements State {
 		final Set<SymbolDerivation<?, ?>> results = popped.get(callee);
 		if (results != null) {
 			for (final SymbolDerivation<?, ?> result : results) {
-				link.schedule(truffleFrame, this, result, slot, codepoint);
+				link.schedule(this, result, slot);
 			}
 		}
 

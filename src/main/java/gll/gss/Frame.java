@@ -120,7 +120,7 @@ public class Frame extends Stack {
 		state.markPopped(this, result);
 
 		for (final Link link : stacks) {
-			link.schedule(truffleFrame, state, result, slot, codepoint);
+			link.schedule(state, result, slot);
 		}
 	}
 }

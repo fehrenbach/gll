@@ -100,7 +100,7 @@ public class SymbolSlot extends Slot {
 	 */
 	@Override
 	public void parse(VirtualFrame truffleFrame, final State state, final Stack caller, final Intermediate<?> derivation, final int codepoint) {
-		final Stack callee = state.push(truffleFrame, next, caller, state.getPosition(), derivation, codepoint);
+		final Stack callee = state.push(next, caller, state.getPosition(), derivation);
 		symbol.call(truffleFrame, state, callee, codepoint);
 	}
 }

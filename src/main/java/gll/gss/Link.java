@@ -3,7 +3,6 @@
  */
 package gll.gss;
 
-import com.oracle.truffle.api.frame.VirtualFrame;
 import gll.grammar.Slot;
 import gll.parser.State;
 import gll.sppf.Intermediate;
@@ -91,7 +90,7 @@ public class Link extends GSSNode<Stack> {
 	 * @param state
 	 *            the parser state
 	 */
-	public void schedule(VirtualFrame truffleFrame, final State state, final SymbolDerivation<?, ?> result, final Slot slot, final int codepoint) {
+	public void schedule(final State state, final SymbolDerivation<?, ?> result, final Slot slot) {
 		final Intermediate<?> y = state.append(slot, derivation, result);
         // NOTE: For some reason we can not avoid creating a CallTarget and adding it to active here. Some of the
         // BalancedSmileys tests fail if we just inline scheduleNow and the Process/CallTarget/RootNode it creates.
