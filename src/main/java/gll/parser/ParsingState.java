@@ -69,7 +69,7 @@ public class ParsingState implements State {
 	/**
 	 * The next position in the token stream.
 	 */
-	public Position next;
+	public Position next = BeforeInput.create();
 
 	/**
 	 * The set of stack frames that have been popped for the current token.
@@ -83,7 +83,7 @@ public class ParsingState implements State {
 	 * 0 is the position just before the first token.
 	 * </p>
 	 */
-	public int position;
+	public int position = -1;
 
 	/**
 	 * The start symbol of the grammar we are parsing.
@@ -148,10 +148,6 @@ public class ParsingState implements State {
 	 * The current result of parsing.
 	 */
 	private NonterminalSymbolDerivation result;
-
-    public ParsingState() {
-        reset();
-    }
 
     /**
 	 * {@inheritDoc}
@@ -334,15 +330,6 @@ public class ParsingState implements State {
             active.add(Truffle.getRuntime().createCallTarget(new SlotProcessRootNode(slot, caller, derivation)));
 		}
 	}
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void reset() {
-        next = BeforeInput.create();
-        position = -1;
-    }
 
     /**
 	 * {@inheritDoc}

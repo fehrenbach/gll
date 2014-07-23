@@ -171,11 +171,6 @@ public interface State {
 	 */
 	void scheduleNow(final Slot slot, final Stack caller, final Intermediate<?> derivation);
 
-    /**
-     * Reset parsing state. Call this method before parsing further input with a changed grammar.
-     */
-    void reset();
-
 	/**
 	 * Exports the graph-structured stack to a <code>*.dot</code> file (for
 	 * GraphViz).

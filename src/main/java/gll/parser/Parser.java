@@ -49,14 +49,13 @@ public class Parser {
 	/**
 	 * Parser state.
 	 */
-	private final ParsingState state;
+	private ParsingState state;
 
 	/**
 	 * Create Parser.
 	 */
 	public Parser(final SortIdentifier start) {
 		this.start = start;
-        this.state = new ParsingState();
 	}
 
 	public NonterminalSymbolDerivation getResult() {
@@ -92,6 +91,8 @@ public class Parser {
 	 * @throws IOException
 	 */
 	public void parse(final Reader reader) throws IOException {
+        state = new ParsingState();
+
 		state.start = start;
 		state.active.add(Truffle.getRuntime().createCallTarget(new StartProcessRootNode(new Initial(), start)));
 
@@ -105,11 +106,6 @@ public class Parser {
                 current.call(state, codepoint);
 			}
 		} while (codepoint >= 0);
-
-        // Prepare state for next call to parse.
-        // We will parse as if the token stream just starts, but we keep the unchanged (and optimized) parts of the
-        // grammar AST.
-        state.reset();
 
 		// state.writeGSS("/home/stefan/gss.dot");
 	}
