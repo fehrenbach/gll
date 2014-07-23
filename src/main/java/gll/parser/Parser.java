@@ -47,7 +47,7 @@ public class Parser {
 	/**
 	 * Parser state.
 	 */
-	private final ParsingState state = new ParsingState();
+	private ParsingState state;
 
 	/**
 	 * Create Parser.
@@ -89,6 +89,8 @@ public class Parser {
 	 * @throws IOException
 	 */
 	public void parse(final Reader reader) throws IOException {
+        state = new ParsingState();
+
 		state.start = start;
 		state.active.add(new StartProcess(new Initial(), start));
 

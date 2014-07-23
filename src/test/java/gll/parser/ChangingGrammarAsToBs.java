@@ -12,6 +12,7 @@ import java.io.IOException;
 
 import static gll.grammar.SortIdentifier.production;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 public class ChangingGrammarAsToBs extends TestParser {
     private SortIdentifier S = new SortIdentifier("S");
@@ -111,15 +112,15 @@ public class ChangingGrammarAsToBs extends TestParser {
         assertAccepted(S, "b");
     }
 
-	/**
-	 * Test that the word {@code "a""b"} is accepted, when the grammar changes in the middle to actually accept {@code "b"}.
-	 *
-	 * @throws java.io.IOException
-	 *             when something goes wrong with the Reader.
-	 */
-	@Test
-	public final void testExample05() throws IOException {
-		Parser p = new Parser(S);
+    /**
+     * Test that the word {@code "a""b"} is accepted, when the grammar changes in the middle to actually accept {@code "b"}.
+     *
+     * @throws java.io.IOException
+     *             when something goes wrong with the Reader.
+     */
+    @Test
+    public final void testExample05() throws IOException {
+        Parser p = new Parser(S);
         parseAs();
         p.parse("a");
         assertFalse("False negative", p.getResult().getChildren().isEmpty());
@@ -127,5 +128,23 @@ public class ChangingGrammarAsToBs extends TestParser {
         parseBs();
         p.parse("b");
         assertFalse("False negative", p.getResult().getChildren().isEmpty());
-	}
+    }
+
+    /**
+     * Test that the word {@code "a""a"} is not accepted, when the grammar changes in the middle to actually accept {@code "b"}.
+     *
+     * @throws java.io.IOException
+     *             when something goes wrong with the Reader.
+     */
+    @Test
+    public final void testExample06() throws IOException {
+        Parser p = new Parser(S);
+        parseAs();
+        p.parse("a");
+        assertFalse("False negative", p.getResult().getChildren().isEmpty());
+        System.out.println("Changing grammar");
+        parseBs();
+        p.parse("a");
+        assertTrue(p.getResult().getChildren().isEmpty());
+    }
 }
