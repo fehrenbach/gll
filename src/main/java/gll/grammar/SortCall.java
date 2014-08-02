@@ -12,10 +12,6 @@ public class SortCall extends Symbol {
         this.sort = sort;
     }
 
-    public SortCall(String name) {
-        this(new SortIdentifier(name));
-    }
-
     @Override
     public void call(VirtualFrame truffleFrame, State state, Stack frame, int codepoint) {
         SortCallCached replacement = new SortCallCached(sort);
