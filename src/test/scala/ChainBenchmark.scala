@@ -33,7 +33,7 @@ object ChainBenchmark
 
   override def reporter = Reporter.Composite(CSVReporter(), RegressionReporter(Tester.Accepter(), Historian.Window(1)), DsvReporter(','), super.reporter)
 
-  val as = String.valueOf(util.Arrays.fill(new Array[Char](150), 'a'))
+  val as = "a" * 150
 
   performance of "LongChains" config (
     exec.minWarmupRuns -> 100,
