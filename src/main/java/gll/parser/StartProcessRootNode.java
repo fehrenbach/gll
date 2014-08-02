@@ -1,7 +1,7 @@
 package gll.parser;
 
 import com.oracle.truffle.api.frame.VirtualFrame;
-import gll.grammar.SortCall;
+import gll.grammar.SortCallCached;
 import gll.grammar.SortIdentifier;
 import gll.grammar.Symbol;
 import gll.gss.Stack;
@@ -12,7 +12,7 @@ class StartProcessRootNode extends com.oracle.truffle.api.nodes.RootNode {
 
     public StartProcessRootNode(Stack stack, SortIdentifier sort) {
         this.stack = stack;
-        this.sort = new SortCall(sort);
+        this.sort = new SortCallCached(sort);
     }
 
     @Override
