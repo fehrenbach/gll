@@ -10,6 +10,9 @@ import scala.collection.mutable
 object ChainBenchmark
   extends PerformanceTest.OfflineReport {
 
+  val jvmflagsBench = "-server -Xss64m -G:+TruffleCompilationExceptionsAreFatal -G:TruffleCompilationThreshold=1"
+  val jvmflagsVerbose = jvmflagsBench + " " + "-G:+TraceTruffleInlining -Dtruffle.TraceRewrites=true -Dtruffle.DetailedRewriteReasons=true -G:+TraceTruffleCompilationDetails -G:+TraceTruffleCompilation -XX:+UnlockDiagnosticVMOptions -XX:CompileCommand=print,*::executeHelper"
+
   val sizes = biggerWarmupset(Gen.enumeration("chainLength")(1, 50, 100, 150, 200))
 
   def biggerWarmupset[T](t: Gen[T]): Gen[T] = new Gen[T] {
@@ -39,7 +42,7 @@ object ChainBenchmark
     // Just want to run one VM, but the Graal-enabled one with custom flags.
     exec.independentSamples -> 1,
     exec.jvmcmd -> "/home/stefan/opt/graalvm-jdk1.8.0-0.3/bin/java",
-    exec.jvmflags -> "-server -Xss64m -G:+TruffleCompilationExceptionsAreFatal -G:+TraceTruffleInlining -Dtruffle.TraceRewrites=true -Dtruffle.DetailedRewriteReasons=true -G:+TraceTruffleCompilationDetails -G:+TraceTruffleCompilation -G:TruffleCompilationThreshold=1 -XX:+UnlockDiagnosticVMOptions -XX:CompileCommand=print,*::executeHelper"
+    exec.jvmflags -> jvmflagsBench // jvmflagsVerbose
     ) in {
     val parsers: mutable.Map[Int, (Parser, SortIdentifier)] = mutable.HashMap()
 
