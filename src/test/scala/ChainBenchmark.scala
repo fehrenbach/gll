@@ -1,6 +1,6 @@
 import java.util
 
-import gll.grammar.{SortIdentifier, TerminalSymbol}
+import gll.grammar.{Sort, TerminalSymbol}
 import gll.parser.Parser
 import org.scalameter.Parameters
 import org.scalameter.api._
@@ -18,12 +18,12 @@ object ChainBenchmark
     def generate(params: Parameters) = t.generate(params)
   }
 
-  def setupChain(length: Int, start: SortIdentifier, end: SortIdentifier): Unit = {
+  def setupChain(length: Int, start: Sort, end: Sort): Unit = {
     if (length == 0) {
-      start.setProductions(SortIdentifier.production(end))
+      start.add(end)
     } else {
-      val next = new SortIdentifier(s"C $length")
-      start.setProductions(SortIdentifier.production(next))
+      val next = new Sort(s"C $length")
+      start.add(next)
       setupChain(length - 1, next, end)
     }
   }
@@ -41,14 +41,14 @@ object ChainBenchmark
     exec.jvmcmd -> "/home/stefan/opt/graalvm-jdk1.8.0-0.3/bin/java",
     exec.jvmflags -> "-server -Xss64m -G:+TruffleCompilationExceptionsAreFatal -G:+TraceTruffleInlining -Dtruffle.TraceRewrites=true -Dtruffle.DetailedRewriteReasons=true -G:+TraceTruffleCompilationDetails -G:+TraceTruffleCompilation -G:TruffleCompilationThreshold=1 -XX:+UnlockDiagnosticVMOptions -XX:CompileCommand=print,*::executeHelper"
     ) in {
-    val parsers: mutable.Map[Int, (Parser, SortIdentifier)] = mutable.HashMap()
+    val parsers: mutable.Map[Int, (Parser, Sort)] = mutable.HashMap()
 
     def setupParser() = (chainLength: Int) => {
       parsers getOrElseUpdate(chainLength, {
-        val startSymbol = new SortIdentifier("S")
+        val startSymbol = new Sort("S")
         val parser = new Parser(startSymbol)
-        val end = new SortIdentifier("E")
-        end.setProductions(SortIdentifier.production(TerminalSymbol.singleton('a'), startSymbol))
+        val end = new Sort("E")
+        end.add(TerminalSymbol.singleton('a'), startSymbol)
 
         setupChain(chainLength, startSymbol, end)
 

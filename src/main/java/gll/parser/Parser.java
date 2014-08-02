@@ -42,7 +42,7 @@ public class Parser {
     /**
      * The start nonterminal.
      */
-    private final SortIdentifier start;
+    private final Sort start;
 
 	/**
 	 * Parser state.
