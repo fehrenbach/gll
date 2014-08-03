@@ -1,5 +1,4 @@
-import gll.grammar.SortIdentifier._
-import gll.grammar.{SortIdentifier, TerminalSymbol}
+import gll.grammar.{Sort, TerminalSymbol}
 import gll.parser.Parser
 import org.scalameter.api._
 
@@ -11,12 +10,12 @@ object FactoredBenchmark
   val jvmflagsBench = "-server -Xss64m -G:+TruffleCompilationExceptionsAreFatal -G:TruffleCompilationThreshold=1"
   val jvmflagsVerbose = jvmflagsBench + " " + "-G:+TraceTruffleInlining -Dtruffle.TraceRewrites=true -Dtruffle.DetailedRewriteReasons=true -G:+TraceTruffleCompilationDetails -G:+TraceTruffleCompilation -XX:+UnlockDiagnosticVMOptions -XX:CompileCommand=print,*::executeHelper"
 
-  val sizes = Gen.enumeration("size")("b" * 1, "b" * 2, "b" * 4, "b" * 8, "b" * 16, "b" * 32, "b" * 64)
+  val sizes = Gen.enumeration("size")("b" * 1, "b" * 2, "b" * 4, "b" * 8, "b" * 16, "b" * 32, "b" * 64, "b" * 128)
 
   override def reporter = Reporter.Composite(CSVReporter(), RegressionReporter(Tester.Accepter(), Historian.Window(1)), DsvReporter(','), super.reporter)
 
   performance of "Factored" config (
-    exec.minWarmupRuns -> 10,
+    exec.minWarmupRuns -> 100,
     exec.maxWarmupRuns -> 10000,
     exec.benchRuns -> 100,
     // Just want to run one VM, but the Graal-enabled one with custom flags.
@@ -28,12 +27,15 @@ object FactoredBenchmark
 
     def setupParser() = (_ : String) => {
       parsers getOrElseUpdate(42, {
-        val S = new SortIdentifier("S")
+        val S = new Sort("S")
         val parser = new Parser(S)
-        val A: SortIdentifier = new SortIdentifier("A")
-        val b: TerminalSymbol = TerminalSymbol.singleton('b')
-        S.setProductions(production(b), production(S, S, A))
-        A.setProductions(production(S), production())
+        val A = new Sort("A")
+        val b = TerminalSymbol.singleton('b')
+        S.add(b)
+        S.add(S, S, A)
+
+        A.add(S)
+        A.add()
 
         val bs = "b" * 150
 
