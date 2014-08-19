@@ -49,7 +49,7 @@ object AmbiguousBenchmark
       })
     }
 
-    measure method("foo") in {
+    measure method("truffle") in {
       using(sizes) setUp {
         setupParser()
       } in {
