@@ -8,8 +8,8 @@ import scala.collection.mutable
 object ChainBenchmark
   extends PerformanceTest.OfflineReport {
 
-  val jvmflagsBench = "-server -Xss64m -G:+TruffleCompilationExceptionsAreFatal -G:TruffleCompilationThreshold=1"
-  val jvmflagsVerbose = jvmflagsBench + " " + "-G:+TraceTruffleInlining -Dtruffle.TraceRewrites=true -Dtruffle.DetailedRewriteReasons=true -G:+TraceTruffleCompilationDetails -G:+TraceTruffleCompilation -XX:+UnlockDiagnosticVMOptions -XX:CompileCommand=print,*::executeHelper"
+  val jvmflagsBench = "-server -Xss64m -G:TruffleCompilationThreshold=1"
+  val jvmflagsVerbose = jvmflagsBench + " " + "-G:+TruffleCompilationExceptionsAreFatal -G:+TraceTruffleInlining -Dtruffle.TraceRewrites=true -Dtruffle.DetailedRewriteReasons=true -G:+TraceTruffleCompilationDetails -G:+TraceTruffleCompilation -XX:+UnlockDiagnosticVMOptions -XX:CompileCommand=print,*::executeHelper"
 
   val sizes = biggerWarmupset(Gen.enumeration("chainLength")(1, 50, 100, 150, 200))
 
