@@ -65,7 +65,7 @@ object ChainBenchmark
       })
     }
 
-    measure method("foo") in {
+    measure method("gll") in {
       using(sizes) setUp {
         setupParser()
       } in {

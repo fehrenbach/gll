@@ -84,7 +84,7 @@ object SmileysBenchmark
          })
        }
 
-       measure method("foo") in {
+       measure method("gll") in {
          using(sizes) setUp {
            setupParser()
          } in {
