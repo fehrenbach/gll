@@ -2,7 +2,7 @@ scalaVersion := "2.11.1"
 
 EclipseKeys.projectFlavor := EclipseProjectFlavor.Java
 
-EclipseKeys.executionEnvironment := Some(EclipseExecutionEnvironment.JavaSE18)
+//EclipseKeys.executionEnvironment := Some(EclipseExecutionEnvironment.JavaSE18)
 
 libraryDependencies ++= Seq(
   "com.google.caliper" % "caliper" % "0.5-rc1",
