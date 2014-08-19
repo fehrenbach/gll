@@ -8,8 +8,8 @@ import scala.collection.mutable
 object FactoredBenchmark
   extends PerformanceTest.OfflineReport {
 
-  val jvmflagsBench = "-server -Xss64m -G:+TruffleCompilationExceptionsAreFatal -G:TruffleCompilationThreshold=1"
-  val jvmflagsVerbose = jvmflagsBench + " " + "-G:+TraceTruffleInlining -Dtruffle.TraceRewrites=true -Dtruffle.DetailedRewriteReasons=true -G:+TraceTruffleCompilationDetails -G:+TraceTruffleCompilation -XX:+UnlockDiagnosticVMOptions -XX:CompileCommand=print,*::executeHelper"
+  val jvmflagsBench = "-server -Xss64m -G:TruffleCompilationThreshold=1"
+  val jvmflagsVerbose = jvmflagsBench + " " + "-G:+TruffleCompilationExceptionsAreFatal -G:+TraceTruffleInlining -Dtruffle.TraceRewrites=true -Dtruffle.DetailedRewriteReasons=true -G:+TraceTruffleCompilationDetails -G:+TraceTruffleCompilation -XX:+UnlockDiagnosticVMOptions -XX:CompileCommand=print,*::executeHelper"
 
   val sizes = Gen.enumeration("size")("b" * 1, "b" * 2, "b" * 4, "b" * 8, "b" * 16, "b" * 32, "b" * 64, "b" * 128)
 
