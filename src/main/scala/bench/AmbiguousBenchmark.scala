@@ -1,3 +1,5 @@
+package bench
+
 import gll.grammar.{Sort, TerminalSymbol}
 import gll.parser.Parser
 import org.scalameter.api._

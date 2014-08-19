@@ -1,3 +1,5 @@
+package bench
+
 import gll.grammar.Sort
 import gll.grammar.common.Characters._
 import gll.parser.Parser
