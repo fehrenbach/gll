@@ -1,3 +1,5 @@
+package bench
+
 import gll.grammar.SortIdentifier
 import gll.grammar.SortIdentifier._
 import gll.grammar.common.Characters._

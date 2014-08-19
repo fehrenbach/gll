@@ -1,22 +1,23 @@
-import gll.grammar.SortIdentifier._
+package bench
+
 import gll.grammar.{SortIdentifier, TerminalSymbol}
 import gll.parser.Parser
 import org.scalameter.api._
 
 import scala.collection.mutable
 
-object FactoredBenchmark
+object AmbiguousBenchmark
   extends PerformanceTest.OfflineReport {
 
   val jvmflagsBench = "-server -Xss64m -G:TruffleCompilationThreshold=1"
   val jvmflagsVerbose = jvmflagsBench + " " + "-G:+TruffleCompilationExceptionsAreFatal -G:+TraceTruffleInlining -Dtruffle.TraceRewrites=true -Dtruffle.DetailedRewriteReasons=true -G:+TraceTruffleCompilationDetails -G:+TraceTruffleCompilation -XX:+UnlockDiagnosticVMOptions -XX:CompileCommand=print,*::executeHelper"
 
-  val sizes = Gen.enumeration("size")("b" * 1, "b" * 2, "b" * 4, "b" * 8, "b" * 16, "b" * 32, "b" * 64, "b" * 128)
+  val sizes = Gen.enumeration("size")("b" * 1, "b" * 2, "b" * 4, "b" * 8, "b" * 16, "b" * 32, "b" * 64)
 
   override def reporter = Reporter.Composite(CSVReporter(), RegressionReporter(Tester.Accepter(), Historian.Window(1)), DsvReporter(','), super.reporter)
 
-  performance of "Factored" config (
-    exec.minWarmupRuns -> 100,
+  performance of "Ambiguous" config (
+    exec.minWarmupRuns -> 10,
     exec.maxWarmupRuns -> 10000,
     exec.benchRuns -> 100,
     // Just want to run one VM, but the Graal-enabled one with custom flags.
@@ -24,16 +25,17 @@ object FactoredBenchmark
     exec.jvmcmd -> "/home/stefan/opt/graalvm-jdk1.8.0-0.3/bin/java",
     exec.jvmflags -> jvmflagsVerbose // jvmflagsVerbose
     ) in {
-    val parsers: mutable.Map[Int, Parser] = mutable.HashMap()
+    val parsers: mutable.Map[Int, (Parser, SortIdentifier)] = mutable.HashMap()
 
     def setupParser() = (_ : String) => {
       parsers getOrElseUpdate(42, {
         val S = new SortIdentifier("S")
         val parser = new Parser(S)
-        val A = new SortIdentifier("A")
-        val b = TerminalSymbol.singleton('b')
-        S.setProductions(production(b), production(S, S, A))
-        A.setProductions(production(S), production())
+
+        S.setProductions(
+          SortIdentifier.production(TerminalSymbol.singleton('b')),
+          SortIdentifier.production(S, S),
+          SortIdentifier.production(S, S, S))
 
         val bs = "b" * 150
 
@@ -43,7 +45,7 @@ object FactoredBenchmark
         }
         println(s"finished our warmup loop")
 
-        parser
+        (parser, S)
       })
     }
 
@@ -52,7 +54,7 @@ object FactoredBenchmark
         setupParser()
       } in {
         bs => {
-          val parser = parsers(42)
+          val (parser, startSymbol) = parsers(42)
           parser.parse(bs)
         }
       }
