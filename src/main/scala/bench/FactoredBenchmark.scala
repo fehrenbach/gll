@@ -23,7 +23,7 @@ object FactoredBenchmark
     // Just want to run one VM, but the Graal-enabled one with custom flags.
     exec.independentSamples -> 1,
     exec.jvmcmd -> "/home/stefan/opt/graalvm-jdk1.8.0-0.3/bin/java",
-    exec.jvmflags -> jvmflagsVerbose // jvmflagsVerbose
+    exec.jvmflags -> jvmflagsBench // jvmflagsVerbose
     ) in {
     val parsers: mutable.Map[Int, Parser] = mutable.HashMap()
 
